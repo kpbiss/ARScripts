@@ -14,11 +14,12 @@ class SCR_ChatPanelManager : SCR_GameCoreBase
 	// Constants
 	
 	// Size of chat history. When more messages than this are added, old messages are deleted.
-	protected const int CHAT_HISTORY_SIZE = 256;
+       protected const int CHAT_HISTORY_SIZE = 256;
 
 	// Start character of each command
 	// note: admin commands are different and are not handled by this chat UI system. They start with a different character.
-	const string CHAT_COMMAND_CHARACTER = "/";
+       const string CHAT_COMMAND_CHARACTER = "/";
+       protected const string TEST_COMMAND_MESSAGE = "Test command executed.";
 	
 	
 	protected bool m_bInitDone = false;
@@ -306,9 +307,24 @@ class SCR_ChatPanelManager : SCR_GameCoreBase
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	protected void InitDefaultChatCommands()
-	{
-	}
+       protected void InitDefaultChatCommands()
+       {
+               ChatCommandInvoker testCommand = GetCommandInvoker("test");
+
+               if (testCommand)
+                       testCommand.Insert(OnTestChatCommand);
+       }
+
+       //------------------------------------------------------------------------------------------------
+       protected void OnTestChatCommand(SCR_ChatPanel panel, string data)
+       {
+               string message = TEST_COMMAND_MESSAGE;
+
+               if (!data.IsEmpty())
+                       message = string.Format("Test command executed: %1", data);
+
+               ShowHelpMessage(message);
+       }
 	
 	//------------------------------------------------------------------------------------------------
 	//! Enables all channels

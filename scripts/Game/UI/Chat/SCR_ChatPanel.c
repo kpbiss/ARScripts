@@ -574,12 +574,17 @@ class SCR_ChatPanel : ScriptedWidgetComponent
 	//! Returned string is always lowercase
 	protected string GetCommand(string s)
 	{
-		if (!s.StartsWith(SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER) || s.Length() < 2)
-			return string.Empty;
+               if (s.Length() < 2)
+                       return string.Empty;
 
-		int cmdEnd = s.IndexOf(" ");
+               string prefix = s.Substring(0, 1);
 
-		// No space, everything ot the right of / is command
+               if (prefix != SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER && prefix != "!")
+                       return string.Empty;
+
+               int cmdEnd = s.IndexOf(" ");
+
+               // No space, everything to the right of the command prefix is command
 		if (cmdEnd == -1)
 			cmdEnd = s.Length();
 
